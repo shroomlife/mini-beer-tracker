@@ -23,7 +23,6 @@ onMounted(async () => {
   LeafletLib = mod
   if (!mapEl.value) return
 
-  // Default Berlin-Mitte falls keine Koords
   const startLat = props.center?.lat ?? props.me?.lat ?? 52.52
   const startLon = props.center?.lon ?? props.me?.lon ?? 13.405
 
@@ -34,7 +33,7 @@ onMounted(async () => {
     attributionControl: true,
   })
 
-  mod.control.zoom({ position: 'topright' }).addTo(map)
+  mod.control.zoom({ position: 'bottomright' }).addTo(map)
 
   mod.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap',
@@ -58,21 +57,38 @@ onBeforeUnmount(() => {
   meMarker = null
 })
 
-function beerIcon(spot: Spot): L.DivIcon {
+function spotIcon(spot: Spot): L.DivIcon {
   if (!LeafletLib) throw new Error('Leaflet not loaded')
-  const count = Math.min(spot.confirmCount, 9)
-  const badge = count > 1 ? `<span style="position:absolute;top:-6px;right:-6px;background:#FF3E3E;color:#fff;border-radius:999px;font-size:10px;font-weight:700;padding:2px 5px;line-height:1;border:2px solid #fff;">${count}</span>` : ''
+  const tone = tierTone(spot)
+  const count = spot.confirmCount
   return LeafletLib.divIcon({
     className: 'mini-beer-marker',
     html: `
-      <div style="position:relative;transform:translate(-50%,-100%);">
-        <div style="font-size:36px;line-height:1;">🍺</div>
-        ${badge}
+      <div style="position:relative;transform:translate(-50%,-100%);display:flex;flex-direction:column;align-items:center;">
+        <div style="
+          width:34px;height:34px;border-radius:50%;
+          background:${tone.bg};border:3px solid #FDFBF4;
+          display:flex;align-items:center;justify-content:center;
+          font-family:'Fraunces',serif;font-weight:600;font-size:14px;color:#FDFBF4;
+        ">
+          ${count}
+        </div>
+        <div style="width:2px;height:8px;background:${tone.bg};margin-top:-1px;"></div>
       </div>
     `,
-    iconSize: [36, 36],
+    iconSize: [34, 44],
     iconAnchor: [0, 0],
   })
+}
+
+function tierTone(spot: Spot): { bg: string } {
+  switch (spot.confidence.tier) {
+    case 'hot': return { bg: '#1E5D3F' }
+    case 'likely': return { bg: '#549573' }
+    case 'uncertain': return { bg: '#A67B3E' }
+    case 'cold': return { bg: '#B94A3B' }
+    default: return { bg: '#85B598' }
+  }
 }
 
 function renderMarkers(): void {
@@ -80,12 +96,12 @@ function renderMarkers(): void {
   markers.forEach(m => m.remove())
   markers = []
   for (const s of props.spots) {
-    const marker = LeafletLib.marker([s.lat, s.lon], { icon: beerIcon(s) })
+    const marker = LeafletLib.marker([s.lat, s.lon], { icon: spotIcon(s) })
       .addTo(map)
-      .bindTooltip(`<strong>${escapeHtml(s.name)}</strong><br><span style="opacity:.7">${escapeHtml(s.address)}</span>`, {
-        direction: 'top',
-        offset: [0, -38],
-      })
+      .bindTooltip(
+        `<strong>${escapeHtml(s.name)}</strong><br><span style="opacity:0.7;">${escapeHtml(s.address)}</span>`,
+        { direction: 'top', offset: [0, -42] },
+      )
     marker.on('click', () => emit('select', s.id))
     markers.push(marker)
   }
@@ -96,12 +112,12 @@ function renderMe(): void {
   meMarker?.remove()
   if (!props.me) return
   meMarker = LeafletLib.circleMarker([props.me.lat, props.me.lon], {
-    radius: 8,
-    color: '#006B3F',
-    fillColor: '#2FA065',
-    fillOpacity: 0.95,
+    radius: 7,
+    color: '#FDFBF4',
+    fillColor: '#1E5D3F',
+    fillOpacity: 1,
     weight: 3,
-  }).addTo(map).bindTooltip('Du bist hier 📍', { direction: 'top' })
+  }).addTo(map).bindTooltip('Du bist hier', { direction: 'top' })
 }
 
 function escapeHtml(s: string): string {

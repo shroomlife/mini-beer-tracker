@@ -20,10 +20,11 @@ const priceEuros = computed(() => {
 const freshness = computed(() => {
   const d = new Date(props.spot.confirmedAt)
   const days = (Date.now() - d.getTime()) / (1000 * 60 * 60 * 24)
-  if (days < 1) return { label: 'heute bestätigt', tone: 'fresh' as const }
-  if (days < 7) return { label: `vor ${Math.round(days)} Tagen`, tone: 'ok' as const }
-  if (days < 30) return { label: `vor ${Math.round(days / 7)} Wochen`, tone: 'old' as const }
-  return { label: `vor ${Math.round(days / 30)} Monaten`, tone: 'stale' as const }
+  if (days < 1) return 'Heute bestätigt'
+  if (days < 2) return 'Gestern bestätigt'
+  if (days < 14) return `Vor ${Math.round(days)} Tagen`
+  if (days < 60) return `Vor ${Math.round(days / 7)} Wochen`
+  return `Vor ${Math.round(days / 30)} Monaten`
 })
 
 const mapsUrl = computed(() =>
@@ -39,130 +40,128 @@ const distance = computed(() => {
 </script>
 
 <template>
-  <article
-    class="relative bg-white rounded-3xl border-2 border-brand-200/60 p-4 shadow-[0_4px_0_0_#C8EBD6] hover:shadow-[0_6px_0_0_#93D7AE] transition-all"
-  >
-    <div class="flex items-start gap-3">
-      <div class="grid place-items-center size-12 rounded-2xl bg-brand-500 text-white text-2xl shrink-0">
-        🍺
-      </div>
-      <div class="flex-1 min-w-0">
-        <h3 class="font-display font-bold text-lg leading-tight truncate">
+  <article class="card p-5">
+    <!-- Header: Name + Distance -->
+    <div class="flex items-start justify-between gap-4">
+      <div class="min-w-0 flex-1">
+        <h3 class="font-display text-lg font-semibold leading-tight text-ink-900 truncate">
           {{ props.spot.name }}
         </h3>
-        <p class="text-sm text-brand-900/70 leading-snug line-clamp-2">
+        <p class="mt-0.5 text-sm text-ink-500 leading-snug line-clamp-2">
           {{ props.spot.address }}
         </p>
-
-        <div class="mt-2">
-          <ConfidenceBar
-            :confidence="props.spot.confidence"
-            :confirm-count="props.spot.confirmCount"
-            :not-found-count="props.spot.notFoundCount"
-          />
+      </div>
+      <div
+        v-if="distance"
+        class="shrink-0 text-right"
+      >
+        <div class="font-display text-base font-medium text-forest-700 tabular-nums">
+          {{ distance }}
         </div>
-
-        <div class="mt-2 flex flex-wrap items-center gap-1.5 text-[11px] font-semibold">
-          <span
-            v-if="distance"
-            class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-brand-50 text-brand-700 border border-brand-200"
-          >
-            <Icon
-              name="mdi:walk"
-              class="size-3.5"
-            />
-            {{ distance }}
-          </span>
-          <span
-            class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full border"
-            :class="{
-              'bg-emerald-50 text-emerald-700 border-emerald-200': freshness.tone === 'fresh',
-              'bg-lime-50 text-lime-700 border-lime-200': freshness.tone === 'ok',
-              'bg-amber-50 text-amber-700 border-amber-200': freshness.tone === 'old',
-              'bg-rose-50 text-rose-700 border-rose-200': freshness.tone === 'stale',
-            }"
-          >
-            <Icon
-              name="mdi:clock-outline"
-              class="size-3.5"
-            />
-            {{ freshness.label }}
-          </span>
-          <span
-            v-if="props.spot.confirmCount > 1"
-            class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-pop-500/10 text-pop-500 border border-pop-500/30"
-          >
-            <Icon
-              name="mdi:fire"
-              class="size-3.5"
-            />
-            {{ props.spot.confirmCount }}× bestätigt
-          </span>
-          <span
-            v-if="props.spot.notFoundCount > 0"
-            class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-rose-50 text-rose-700 border border-rose-200"
-          >
-            🕵️ {{ props.spot.notFoundCount }}× leer
-          </span>
-          <span
-            v-if="priceEuros"
-            class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-sun-500/20 text-amber-800 border border-sun-500/60"
-          >
-            💶 {{ priceEuros }} €
-          </span>
+        <div class="text-[10px] uppercase tracking-wider text-ink-500 mt-0.5">
+          Entfernung
         </div>
-
-        <p
-          v-if="props.spot.vibe"
-          class="mt-2 text-[12px] text-brand-900/80 italic"
-        >
-          „{{ props.spot.vibe }}"
-        </p>
       </div>
     </div>
 
-    <div class="mt-3 grid grid-cols-2 gap-2">
+    <!-- Confidence Bar -->
+    <div class="mt-4">
+      <ConfidenceBar
+        :confidence="props.spot.confidence"
+        :confirm-count="props.spot.confirmCount"
+        :not-found-count="props.spot.notFoundCount"
+      />
+    </div>
+
+    <!-- Meta row: timestamp, confirms, price, vibe -->
+    <div class="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-ink-700">
+      <span class="inline-flex items-center gap-1.5">
+        <Icon
+          name="ph:clock-countdown-bold"
+          class="size-3.5 text-ink-500"
+        />
+        {{ freshness }}
+      </span>
+      <span class="text-ink-300">·</span>
+      <span class="inline-flex items-center gap-1.5">
+        <Icon
+          name="ph:check-circle-bold"
+          class="size-3.5 text-forest-500"
+        />
+        {{ props.spot.confirmCount }}× bestätigt
+      </span>
+      <template v-if="props.spot.notFoundCount > 0">
+        <span class="text-ink-300">·</span>
+        <span class="inline-flex items-center gap-1.5">
+          <Icon
+            name="ph:x-circle-bold"
+            class="size-3.5 text-rust-500"
+          />
+          {{ props.spot.notFoundCount }}× negativ
+        </span>
+      </template>
+      <template v-if="priceEuros">
+        <span class="text-ink-300">·</span>
+        <span class="inline-flex items-center gap-1.5 font-medium text-malt-600">
+          {{ priceEuros }} €
+        </span>
+      </template>
+    </div>
+
+    <!-- Vibe quote -->
+    <p
+      v-if="props.spot.vibe"
+      class="mt-3 pl-3 border-l-2 border-forest-200 text-sm italic text-ink-700 leading-relaxed"
+    >
+      {{ props.spot.vibe }}
+    </p>
+
+    <!-- Actions -->
+    <div class="mt-5 flex flex-wrap gap-2">
       <a
         :href="mapsUrl"
         target="_blank"
         rel="noopener noreferrer"
-        class="btn-chunk h-10 bg-brand-500 text-white text-sm hover:bg-brand-600 col-span-2"
+        class="btn-primary h-10 px-4 text-sm gap-2"
       >
         <Icon
-          name="mdi:google-maps"
-          class="size-4 mr-1.5"
+          name="ph:navigation-arrow-bold"
+          class="size-4"
         />
-        In Google Maps öffnen
+        Navigation
       </a>
       <button
         type="button"
-        class="btn-chunk h-10 px-3 bg-brand-50 text-brand-800 border border-brand-300 text-sm font-semibold"
+        class="btn-secondary h-10 px-4 text-sm gap-2"
         @click="emit('confirm', props.spot.id)"
       >
         <Icon
-          name="mdi:hand-clap"
-          class="size-4 mr-1"
+          name="ph:check-bold"
+          class="size-4"
         />
-        Noch da!
+        Bestätigen
       </button>
       <button
         type="button"
-        class="btn-chunk h-10 px-3 bg-rose-50 text-rose-800 border border-rose-300 text-sm font-semibold"
+        class="btn-secondary h-10 px-4 text-sm gap-2 text-rust-600 border-rust-500/30 hover:bg-rust-500/5 hover:border-rust-500/50"
         @click="emit('notFound', props.spot.id)"
       >
-        🕵️ War nicht da
+        <Icon
+          name="ph:x-bold"
+          class="size-4"
+        />
+        Nicht da
       </button>
       <button
         type="button"
-        aria-label="Löschen"
-        class="btn-chunk h-9 px-3 bg-white border border-brand-200 text-brand-900/50 text-xs col-span-2"
+        aria-label="Spot löschen"
+        class="btn-ghost h-10 px-3 text-sm ml-auto"
         @click="emit('remove', props.spot.id)"
       >
         <Icon
-          name="mdi:trash-can-outline"
-          class="size-4 mr-1"
+          name="ph:trash-bold"
+          class="size-4"
         />
-        Spot löschen
       </button>
     </div>
   </article>

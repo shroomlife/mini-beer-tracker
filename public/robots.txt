@@ -1,2 +1,11 @@
 User-agent: *
 Allow: /
+Allow: /auth
+
+# Auth-Walled Content — hat für Suchmaschinen keinen Nutzen
+Disallow: /map
+Disallow: /spots
+Disallow: /add
+Disallow: /api/
+
+Sitemap: https://beer.shroomlife.de/sitemap.xml

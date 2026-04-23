@@ -1,8 +1,18 @@
 export default defineNuxtRouteMiddleware((to) => {
   const { loggedIn } = useUserSession()
-  const publicRoutes = new Set(['/auth'])
 
-  if (!loggedIn.value && !publicRoutes.has(to.path)) {
+  // Public-Pages — keine Session nötig.
+  const publicRoutes = new Set(['/', '/auth'])
+
+  if (publicRoutes.has(to.path)) {
+    // Eingeloggter User auf Landing? → direkt in die App.
+    if (to.path === '/' && loggedIn.value) {
+      return navigateTo('/map')
+    }
+    return
+  }
+
+  if (!loggedIn.value) {
     return navigateTo('/auth')
   }
 })

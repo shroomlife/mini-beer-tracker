@@ -18,8 +18,8 @@ export default defineNuxtConfig({
       title: 'Mini Beer Tracker',
       viewport: 'width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no',
       meta: [
-        { name: 'description', content: 'Finde Mini-Heinekens in Berliner Spätis. Je kleiner das Bier, desto größer die Freude. 🍺🤏' },
-        { name: 'theme-color', content: '#006B3F' },
+        { name: 'description', content: 'Crowdsourced Mini-Heineken-Tracker für Berliner Spätis. Finde 0,15-l-Biere in deiner Nähe, teile Fundorte und trackt gemeinsam, wo es die kleinen gibt.' },
+        { name: 'theme-color', content: '#1E5D3F' },
         { name: 'apple-mobile-web-app-capable', content: 'yes' },
         { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' },
       ],

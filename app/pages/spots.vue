@@ -1,5 +1,8 @@
 <script setup lang="ts">
-useHead({ title: 'Alle Mini-Beer-Spots' })
+useSeoMeta({
+  title: 'Deine Spots — Mini Beer Tracker',
+  robots: 'noindex,nofollow',
+})
 
 const { spots, loading, refresh, confirm, notFound, remove } = useSpots()
 const { coords, locate } = useCurrentLocation()
@@ -31,134 +34,134 @@ const sortedSpots = computed(() => {
   }
   return arr
 })
+
+const sortOptions = [
+  { value: 'distance' as const, label: 'Nähe' },
+  { value: 'confidence' as const, label: 'Wahrscheinlich' },
+  { value: 'fresh' as const, label: 'Frisch' },
+  { value: 'popular' as const, label: 'Bestätigt' },
+]
 </script>
 
 <template>
-  <main class="flex-1 flex flex-col safe-top px-4 pb-28">
-    <header class="pt-3 pb-2">
-      <div class="flex items-center gap-3">
-        <div class="text-4xl animate-wiggle">
-          🍺
-        </div>
-        <div class="flex-1">
-          <h1 class="font-display text-2xl font-extrabold leading-none">
-            Deine Mini-Beer-Spots
+  <main class="flex-1 flex flex-col safe-top px-4 md:px-6 pb-36">
+    <header class="pt-6 pb-4 max-w-2xl mx-auto w-full">
+      <div class="flex items-baseline justify-between gap-4">
+        <div>
+          <div class="text-[10px] uppercase tracking-[0.28em] text-malt-500 font-medium">
+            Übersicht
+          </div>
+          <h1 class="mt-1 font-display text-3xl md:text-4xl font-semibold text-ink-900 leading-tight">
+            Deine Spots
           </h1>
-          <p class="text-xs text-brand-900/60 mt-1">
+          <p class="mt-1 text-sm text-ink-500">
             {{ spots.length }} Späti{{ spots.length === 1 ? '' : 's' }} in der Sammlung
           </p>
         </div>
         <button
           type="button"
-          class="btn-chunk size-10 rounded-xl bg-white border border-brand-200"
+          class="btn-secondary size-10"
           aria-label="Neu laden"
           @click="coords ? refresh({ lat: coords.lat, lon: coords.lon }) : refresh()"
         >
           <Icon
-            name="mdi:refresh"
-            class="size-5"
+            name="ph:arrows-clockwise-bold"
+            class="size-4"
             :class="{ 'animate-spin': loading }"
           />
         </button>
       </div>
 
-      <!-- Level/XP Card -->
+      <!-- Level card -->
       <div
         v-if="user"
-        class="mt-3 rounded-3xl bg-gradient-to-br from-brand-500 to-brand-700 text-white p-4 border-2 border-white shadow-[0_6px_0_0_#004026] flex items-center gap-3"
+        class="mt-6 rounded-[1.5rem] bg-ink-900 text-cream-50 p-5 flex items-center gap-4 relative overflow-hidden"
+        style="box-shadow: 0 12px 36px -12px rgba(11, 22, 20, 0.3);"
       >
-        <div class="text-4xl">
-          {{ user.progress.emoji }}
-        </div>
-        <div class="flex-1 min-w-0">
-          <div class="flex items-baseline justify-between gap-2">
-            <div>
-              <div class="font-display text-lg font-extrabold leading-none truncate">
-                {{ user.displayName || user.email }}
-              </div>
-              <div class="text-[11px] uppercase tracking-wider text-sun-500 font-bold">
-                Lvl {{ user.progress.level }} · {{ user.progress.rank }}
-              </div>
-            </div>
-            <div class="text-right text-[10px] font-mono tabular-nums text-white/80">
-              {{ user.progress.xp }} / {{ user.progress.nextLevelXp }} XP
-            </div>
+        <div
+          aria-hidden="true"
+          class="absolute -top-16 -right-16 size-48 rounded-full bg-forest-500/30 blur-3xl"
+        />
+        <div class="relative flex-1 min-w-0">
+          <div class="text-[10px] uppercase tracking-[0.28em] text-malt-400 font-medium">
+            {{ user.displayName || user.email }}
           </div>
-          <div class="mt-2 h-2.5 w-full bg-brand-900/50 rounded-full overflow-hidden">
+          <div class="mt-1 flex items-baseline gap-2">
+            <span class="font-display text-2xl font-semibold tabular-nums">
+              Level {{ user.progress.level }}
+            </span>
+            <span class="text-sm text-cream-100/70 font-display italic">
+              · {{ user.progress.rank }}
+            </span>
+          </div>
+          <div class="mt-3 h-1.5 w-full bg-ink-700 rounded-full overflow-hidden">
             <div
-              class="h-full rounded-full bg-sun-500 transition-all duration-500"
+              class="h-full rounded-full bg-malt-400 transition-all duration-700"
               :style="{ width: Math.round(user.progress.progress * 100) + '%' }"
             />
+          </div>
+          <div class="mt-1.5 font-mono text-[11px] text-cream-100/60 tabular-nums">
+            {{ user.progress.xp }} / {{ user.progress.nextLevelXp }} XP
           </div>
         </div>
         <button
           type="button"
-          class="text-xs text-white/70 underline underline-offset-2 hover:text-white"
+          class="relative shrink-0 text-[11px] uppercase tracking-widest text-cream-100/60 hover:text-cream-50 transition-colors"
           @click="logout"
         >
           Logout
         </button>
       </div>
 
-      <div class="mt-3 inline-flex rounded-full bg-white border-2 border-brand-200 p-1 text-xs font-semibold">
+      <!-- Sort tabs -->
+      <div class="mt-6 inline-flex rounded-full bg-cream-50 border border-forest-100 p-1 text-xs font-medium">
         <button
-          v-for="opt in (['distance', 'confidence', 'fresh', 'popular'] as const)"
-          :key="opt"
+          v-for="opt in sortOptions"
+          :key="opt.value"
           type="button"
-          class="px-3 py-1.5 rounded-full transition-colors"
-          :class="sortBy === opt ? 'bg-brand-500 text-white' : 'text-brand-900/70'"
-          @click="sortBy = opt"
+          class="px-3.5 py-1.5 rounded-full transition-colors"
+          :class="sortBy === opt.value ? 'bg-forest-700 text-cream-50' : 'text-ink-500 hover:text-forest-700'"
+          @click="sortBy = opt.value"
         >
-          {{
-            opt === 'distance' ? '📍 Nähe'
-            : opt === 'confidence' ? '🔥 Heiß'
-              : opt === 'fresh' ? '🆕 Frisch'
-                : '⭐ Beliebt'
-          }}
+          {{ opt.label }}
         </button>
       </div>
     </header>
 
     <section
       v-if="loading && spots.length === 0"
-      class="flex-1 grid place-items-center text-center"
+      class="flex-1 grid place-items-center text-ink-500 text-sm"
     >
-      <div>
-        <div class="text-5xl animate-wiggle">
-          🍺
-        </div>
-        <p class="mt-2 text-brand-700 font-display">
-          Lade Spots…
-        </p>
-      </div>
+      Lade Spots…
     </section>
 
     <section
       v-else-if="spots.length === 0"
-      class="flex-1 grid place-items-center text-center"
+      class="flex-1 grid place-items-center text-center max-w-sm mx-auto px-4"
     >
-      <div class="max-w-xs">
-        <div class="text-6xl">
-          🕵️
+      <div>
+        <div class="font-display text-3xl md:text-4xl font-semibold text-ink-900 leading-tight">
+          Noch keine Spots.
         </div>
-        <h2 class="font-display text-xl font-bold mt-3">
-          Noch kein Mini-Bier erwischt
-        </h2>
-        <p class="text-sm text-brand-900/60 mt-2">
-          Los! Beim nächsten Späti-Besuch: Wenn's da das kleine Heineken gibt, tipp auf 🍺 in der Bar unten.
+        <p class="mt-3 text-sm text-ink-700 leading-relaxed">
+          Beim nächsten Späti-Besuch: wenn da das kleine Heineken liegt, einfach auf das Plus in der Navigation unten tippen.
         </p>
         <NuxtLink
           to="/add"
-          class="btn-chunk mt-6 inline-flex h-12 px-6 bg-brand-500 text-white font-display font-bold"
+          class="btn-primary mt-8 h-11 px-6 text-sm"
         >
-          Ersten Spot hinzufügen
+          Ersten Spot anlegen
+          <Icon
+            name="ph:arrow-right-bold"
+            class="ml-2 size-4"
+          />
         </NuxtLink>
       </div>
     </section>
 
     <section
       v-else
-      class="flex-1 flex flex-col gap-3 mt-3"
+      class="flex-1 flex flex-col gap-3 max-w-2xl mx-auto w-full"
     >
       <SpotCard
         v-for="spot in sortedSpots"

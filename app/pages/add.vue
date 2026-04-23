@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import type { GeocodeResult } from '~~/shared/types/spot'
 
-useHead({ title: 'Mini Beer entdeckt!' })
+useSeoMeta({
+  title: 'Spot anlegen — Mini Beer Tracker',
+  robots: 'noindex,nofollow',
+})
 
 type Step = 'intro' | 'locating' | 'confirm' | 'saved'
 const step = ref<Step>('intro')
 
-const { coords, loading: locLoading, error: locError, locate } = useCurrentLocation()
+const { coords, error: locError, locate } = useCurrentLocation()
 const { add } = useSpots()
 const { active: confettiActive, pieces: confettiPieces, celebrate } = useConfetti()
 
@@ -34,7 +37,7 @@ async function startCapture(): Promise<void> {
       })
       const suggestedName = [geo.value.road, geo.value.houseNumber].filter(Boolean).join(' ')
         || geo.value.suburb
-        || 'Später'
+        || 'Späti'
       form.name = suggestedName + (geo.value.suburb && suggestedName !== geo.value.suburb ? ` (${geo.value.suburb})` : '')
     }
     catch (e) {
@@ -66,7 +69,7 @@ async function save(): Promise<void> {
     ? Math.round(Number(form.priceEuros.replace(',', '.')) * 100)
     : null
   const res = await add({
-    name: form.name.trim() || 'Später',
+    name: form.name.trim() || 'Späti',
     address: addressPretty.value || geo.value.displayName,
     lat: coords.value.lat,
     lon: coords.value.lon,
@@ -84,208 +87,212 @@ async function save(): Promise<void> {
 </script>
 
 <template>
-  <main class="relative flex-1 flex flex-col safe-top px-5 pb-28">
+  <main class="relative flex-1 flex flex-col safe-top px-5 md:px-8 pb-36">
     <ConfettiLayer
       :active="confettiActive"
       :pieces="confettiPieces"
     />
 
-    <!-- Intro Step -->
+    <!-- Intro -->
     <section
       v-if="step === 'intro'"
-      class="flex-1 flex flex-col items-center justify-center text-center gap-6"
+      class="flex-1 flex flex-col items-center justify-center text-center gap-8 max-w-md mx-auto"
     >
-      <div class="text-7xl animate-wiggle">
-        🍺🤏
+      <div class="text-[10px] uppercase tracking-[0.28em] text-malt-500 font-medium">
+        Neuer Spot
       </div>
-      <h1 class="font-display text-3xl font-bold leading-tight">
-        Du hast Mini-Bier entdeckt?
+      <h1 class="font-display text-4xl md:text-5xl font-semibold leading-[1.05] text-ink-900">
+        Mini&#8209;Bier gesichtet?
       </h1>
-      <p class="text-brand-900/70 max-w-sm">
-        Drück einmal auf den Button, wir speichern deinen Standort präzise
-        und merken uns den Späti für dich und deine Frau. 💚
+      <p class="text-ink-700 leading-relaxed max-w-sm">
+        Tipp auf den Knopf. Wir nehmen deinen GPS-Standort und lesen die
+        Späti&#8209;Adresse automatisch aus.
       </p>
 
       <button
         type="button"
-        class="btn-chunk relative h-32 w-full max-w-sm rounded-[32px] bg-pop-500 text-white border-4 border-white shadow-[0_10px_0_0_#9a0000] active:shadow-[0_4px_0_0_#9a0000] hover:bg-pop-500"
+        class="btn-primary h-20 w-full max-w-xs text-lg font-display font-semibold"
         @click="startCapture"
       >
-        <span class="absolute -top-6 -left-4 text-5xl rotate-[-15deg] animate-wiggle">🍺</span>
-        <span class="absolute -bottom-4 -right-4 text-4xl rotate-[20deg]">✨</span>
-        <span class="font-display text-2xl font-extrabold tracking-tight leading-tight">
-          HIER GIBTS<br>MINI BIER!
-        </span>
+        Hier gibt's welche
+        <Icon
+          name="ph:map-pin-line-bold"
+          class="ml-3 size-5"
+        />
       </button>
 
       <p
         v-if="locError"
-        class="text-pop-500 text-sm font-medium"
+        class="text-rust-600 text-sm"
       >
         {{ locError }}
       </p>
 
-      <p class="text-xs text-brand-900/50 max-w-xs">
-        Wir brauchen kurz deinen Standort (geht natürlich nur auf dieses Gerät) —
-        die Adresse wird via OpenStreetMap geholt.
+      <p class="text-xs text-ink-500 max-w-xs leading-relaxed">
+        Standort wird nur im Moment des Tippens abgefragt und bleibt nur als Spot-Koordinate gespeichert.
       </p>
     </section>
 
-    <!-- Locating Step -->
+    <!-- Locating -->
     <section
       v-else-if="step === 'locating'"
-      class="flex-1 flex flex-col items-center justify-center text-center gap-5"
+      class="flex-1 flex flex-col items-center justify-center text-center gap-6"
     >
-      <div class="text-7xl">
-        <span
-          v-if="locLoading"
-          class="inline-block animate-spin"
-        >📡</span>
-        <span
-          v-else
-          class="inline-block animate-wiggle"
-        >🧭</span>
-      </div>
-      <h2 class="font-display text-2xl font-bold">
-        Standort wird ermittelt…
+      <div class="size-12 rounded-full border-2 border-forest-200 border-t-forest-600 animate-spin" />
+      <h2 class="font-display text-2xl font-semibold text-ink-900">
+        Standort wird ermittelt
       </h2>
-      <p class="text-sm text-brand-900/60 max-w-sm">
-        Bitte erlaube kurz den Standort-Zugriff, falls dein Browser fragt.
+      <p class="text-sm text-ink-500 max-w-sm">
+        Bitte erlaube kurz den Zugriff, falls dein Browser fragt.
       </p>
     </section>
 
-    <!-- Confirm Step -->
+    <!-- Confirm -->
     <section
       v-else-if="step === 'confirm'"
-      class="flex-1 flex flex-col gap-4"
+      class="flex-1 flex flex-col gap-5 max-w-md mx-auto w-full pt-8"
     >
-      <header class="pt-4">
+      <header>
         <button
           type="button"
-          class="text-sm text-brand-700 underline"
+          class="btn-ghost h-8 px-2 text-xs gap-1.5"
           @click="step = 'intro'"
         >
-          ← Nochmal messen
+          <Icon
+            name="ph:arrow-left-bold"
+            class="size-3.5"
+          />
+          Nochmal messen
         </button>
-        <h2 class="font-display text-2xl font-bold mt-2">
-          Gefunden! 🎯
+        <div class="mt-4 text-[10px] uppercase tracking-[0.28em] text-malt-500 font-medium">
+          Schritt 2
+        </div>
+        <h2 class="mt-1 font-display text-3xl font-semibold text-ink-900 leading-tight">
+          Details prüfen
         </h2>
       </header>
 
-      <div class="rounded-3xl bg-white border-2 border-brand-200 p-4">
-        <div class="flex items-start gap-3">
-          <div class="text-3xl">
-            📍
-          </div>
-          <div class="flex-1 min-w-0">
-            <p
-              v-if="geoLoading"
-              class="text-sm text-brand-900/50"
-            >
-              Adresse wird geholt…
+      <div class="card p-5">
+        <div class="text-[10px] uppercase tracking-widest text-ink-500 font-medium">
+          Adresse
+        </div>
+        <div class="mt-2">
+          <p
+            v-if="geoLoading"
+            class="text-sm text-ink-500"
+          >
+            Wird geladen…
+          </p>
+          <p
+            v-else-if="geoError"
+            class="text-sm text-rust-600"
+          >
+            {{ geoError }}
+          </p>
+          <div
+            v-else-if="geo"
+            class="text-sm"
+          >
+            <p class="font-display text-lg font-medium text-ink-900">
+              {{ addressPretty || geo.displayName }}
             </p>
             <p
-              v-else-if="geoError"
-              class="text-sm text-pop-500"
+              v-if="geo.suburb"
+              class="text-ink-500 mt-0.5"
             >
-              {{ geoError }}
-            </p>
-            <div
-              v-else-if="geo"
-              class="text-sm"
-            >
-              <p class="font-semibold">
-                {{ addressPretty || geo.displayName }}
-              </p>
-              <p
-                v-if="geo.suburb"
-                class="text-brand-900/60"
-              >
-                Kiez: {{ geo.suburb }}
-              </p>
-            </div>
-            <p
-              v-if="coords"
-              class="text-[11px] text-brand-900/40 mt-1 font-mono"
-            >
-              {{ coords.lat.toFixed(5) }}, {{ coords.lon.toFixed(5) }} · ±{{ Math.round(coords.accuracy) }}m
+              {{ geo.suburb }}
             </p>
           </div>
+          <p
+            v-if="coords"
+            class="mt-3 font-mono text-[11px] text-ink-500 tabular-nums"
+          >
+            {{ coords.lat.toFixed(5) }}, {{ coords.lon.toFixed(5) }} · ±{{ Math.round(coords.accuracy) }}m
+          </p>
         </div>
       </div>
 
       <form
-        class="flex flex-col gap-3"
+        class="flex flex-col gap-4"
         @submit.prevent="save"
       >
-        <label class="flex flex-col gap-1">
-          <span class="text-sm font-semibold text-brand-900/80">Name des Spätis</span>
+        <label class="flex flex-col gap-1.5">
+          <span class="text-xs uppercase tracking-widest text-ink-500 font-medium">Name</span>
           <input
             v-model="form.name"
             type="text"
             placeholder="z. B. Späti an der Ecke"
-            class="rounded-2xl border-2 border-brand-200 px-4 py-3 bg-white focus:border-brand-500 outline-none"
+            class="rounded-2xl border border-forest-200 px-4 py-3 bg-cream-50 focus:border-forest-500 focus:ring-2 focus:ring-forest-500/20 outline-none transition"
             required
           >
         </label>
 
-        <label class="flex flex-col gap-1">
-          <span class="text-sm font-semibold text-brand-900/80">Preis pro Mini-Bier <span class="text-brand-900/40 font-normal">(optional)</span></span>
+        <label class="flex flex-col gap-1.5">
+          <span class="text-xs uppercase tracking-widest text-ink-500 font-medium">
+            Preis
+            <span class="normal-case tracking-normal text-ink-300">· optional</span>
+          </span>
           <div class="relative">
             <input
               v-model="form.priceEuros"
               type="text"
               inputmode="decimal"
               placeholder="1,50"
-              class="w-full rounded-2xl border-2 border-brand-200 px-4 py-3 pr-10 bg-white focus:border-brand-500 outline-none"
+              class="w-full rounded-2xl border border-forest-200 px-4 py-3 pr-10 bg-cream-50 focus:border-forest-500 focus:ring-2 focus:ring-forest-500/20 outline-none transition tabular-nums"
             >
-            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-brand-900/50">€</span>
+            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-ink-500">€</span>
           </div>
         </label>
 
-        <label class="flex flex-col gap-1">
-          <span class="text-sm font-semibold text-brand-900/80">Vibe / Notiz <span class="text-brand-900/40 font-normal">(optional)</span></span>
+        <label class="flex flex-col gap-1.5">
+          <span class="text-xs uppercase tracking-widest text-ink-500 font-medium">
+            Notiz
+            <span class="normal-case tracking-normal text-ink-300">· optional</span>
+          </span>
           <textarea
             v-model="form.vibe"
             rows="2"
-            placeholder="Freundlich, hat auch Kühlschrank…"
-            class="rounded-2xl border-2 border-brand-200 px-4 py-3 bg-white focus:border-brand-500 outline-none resize-none"
+            placeholder="Freundliche Kassenkraft, immer gut gekühlt…"
+            class="rounded-2xl border border-forest-200 px-4 py-3 bg-cream-50 focus:border-forest-500 focus:ring-2 focus:ring-forest-500/20 outline-none resize-none transition"
           />
         </label>
 
         <button
           type="submit"
           :disabled="!geo || !coords"
-          class="btn-chunk h-14 bg-brand-500 text-white font-display text-lg font-bold disabled:opacity-50 disabled:shadow-none"
+          class="btn-primary h-12 text-sm disabled:opacity-50 mt-2"
         >
-          🍺 Spot speichern
+          Spot speichern
         </button>
       </form>
     </section>
 
-    <!-- Saved Step -->
+    <!-- Saved -->
     <section
       v-else-if="step === 'saved'"
-      class="flex-1 flex flex-col items-center justify-center text-center gap-5"
+      class="flex-1 flex flex-col items-center justify-center text-center gap-5 animate-rise"
     >
-      <div class="text-8xl animate-pop">
-        🎉
+      <div class="size-14 rounded-full bg-forest-600 grid place-items-center">
+        <Icon
+          name="ph:check-bold"
+          class="size-7 text-cream-50"
+        />
       </div>
-      <h2 class="font-display text-3xl font-extrabold">
-        {{ lastResult?.reason === 'confirmed' ? 'Bestätigt!' : 'Gesichert!' }}
+      <h2 class="font-display text-3xl font-semibold text-ink-900">
+        {{ lastResult?.reason === 'confirmed' ? 'Bestätigt' : 'Gespeichert' }}
       </h2>
-      <p class="text-brand-900/70">
+      <p class="text-ink-700 max-w-xs">
         {{
           lastResult?.reason === 'confirmed'
-            ? 'Diesen Spot kannten wir schon — Frische-Update gelandet.'
-            : 'Dein Mini-Bier-Spot ist jetzt auf der Karte.'
+            ? 'Kannten wir schon — Frische aktualisiert.'
+            : 'Dein Spot steht jetzt auf der Karte.'
         }}
       </p>
       <div
         v-if="lastResult"
-        class="mt-2 font-display text-2xl font-extrabold text-brand-600"
+        class="font-display text-xl text-malt-600 tabular-nums"
       >
-        +{{ lastResult.gained }} XP 🚀
+        +{{ lastResult.gained }} XP
       </div>
     </section>
   </main>

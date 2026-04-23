@@ -10,13 +10,14 @@ defineProps<{
 <template>
   <NuxtLink
     :to="to"
-    class="flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl transition-colors"
-    :class="active ? 'text-brand-600' : 'text-brand-900/50 hover:text-brand-600'"
+    class="flex flex-col items-center gap-1 px-4 py-1.5 rounded-full transition-colors duration-200"
+    :class="active ? 'text-forest-700' : 'text-ink-500 hover:text-forest-600'"
   >
     <Icon
       :name="icon"
-      class="size-6"
+      class="size-5 transition-transform duration-200"
+      :class="active ? 'scale-110' : ''"
     />
-    <span class="text-[10px] font-display font-semibold uppercase tracking-wide">{{ label }}</span>
+    <span class="text-[10px] tracking-[0.14em] uppercase font-medium">{{ label }}</span>
   </NuxtLink>
 </template>

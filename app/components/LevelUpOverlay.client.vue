@@ -1,49 +1,55 @@
 <script setup lang="ts">
-import { rankEmoji, rankTitle } from '~~/shared/utils/xp'
+import { rankTitle } from '~~/shared/utils/xp'
 
 const { levelUp, dismissLevelUp } = useXpFeedback()
 
 const level = computed(() => levelUp.value?.newLevel ?? 0)
-const emoji = computed(() => rankEmoji(level.value))
 const title = computed(() => rankTitle(level.value))
 </script>
 
 <template>
   <Teleport to="body">
-    <Transition name="levelup">
+    <Transition name="lu">
       <div
         v-if="levelUp"
-        class="fixed inset-0 z-[9500] grid place-items-center bg-brand-900/70 backdrop-blur-sm"
+        class="fixed inset-0 z-[9500] grid place-items-center bg-ink-900/60 backdrop-blur-md px-5"
         role="alertdialog"
         aria-modal="true"
         @click="dismissLevelUp"
       >
         <div
-          class="max-w-sm w-[calc(100%-2rem)] bg-gradient-to-br from-brand-500 to-brand-700 text-white rounded-[32px] p-8 text-center border-4 border-sun-500 shadow-2xl animate-pop"
+          class="max-w-sm w-full bg-cream-50 rounded-[2rem] px-8 py-10 text-center animate-pop"
+          style="box-shadow: 0 30px 60px -20px rgba(11, 22, 20, 0.5);"
           @click.stop
         >
-          <div class="text-xs uppercase tracking-[0.3em] font-display font-bold text-sun-500">
-            Level Up
+          <div class="text-[10px] uppercase tracking-[0.32em] font-medium text-malt-500">
+            Aufgestiegen
           </div>
-          <div class="mt-2 text-7xl animate-wiggle">
-            {{ emoji }}
+
+          <div class="mt-4 flex items-center justify-center gap-3">
+            <div class="h-px w-10 bg-forest-200" />
+            <div class="font-display text-5xl font-semibold text-forest-700 tabular-nums">
+              {{ level }}
+            </div>
+            <div class="h-px w-10 bg-forest-200" />
           </div>
-          <h2 class="mt-3 font-display text-3xl font-extrabold leading-tight">
-            Level {{ level }}
-          </h2>
-          <p class="font-display text-lg text-sun-500">
+          <div class="text-[10px] uppercase tracking-widest text-ink-500 mt-1">
+            Level
+          </div>
+
+          <h2 class="mt-6 font-display text-2xl font-semibold text-ink-900 leading-tight">
             {{ title }}
+          </h2>
+          <p class="mt-3 text-sm text-ink-700 leading-relaxed">
+            Dein neuer Titel. Die Berliner Mini-Bier-Welt hat dich gerade etwas lieber.
           </p>
-          <p class="mt-4 text-sm text-white/80">
-            Du bist jetzt ein <strong>{{ title }}</strong>.
-            Die Berliner Mini-Bier-Welt bewundert dich. 💚
-          </p>
+
           <button
             type="button"
-            class="btn-chunk mt-6 h-12 px-6 bg-sun-500 text-brand-900 font-display font-bold"
+            class="btn-primary mt-8 h-11 px-8 text-sm"
             @click="dismissLevelUp"
           >
-            Prost! 🍻
+            Weiter
           </button>
         </div>
       </div>
@@ -52,6 +58,6 @@ const title = computed(() => rankTitle(level.value))
 </template>
 
 <style scoped>
-.levelup-enter-active, .levelup-leave-active { transition: opacity 0.35s; }
-.levelup-enter-from, .levelup-leave-to { opacity: 0; }
+.lu-enter-active, .lu-leave-active { transition: opacity 0.3s; }
+.lu-enter-from, .lu-leave-to { opacity: 0; }
 </style>

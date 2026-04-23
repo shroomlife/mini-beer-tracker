@@ -9,44 +9,48 @@ const props = defineProps<{
 
 const tierColor = computed(() => {
   switch (props.confidence.tier) {
-    case 'hot': return 'bg-emerald-500'
-    case 'likely': return 'bg-lime-500'
-    case 'uncertain': return 'bg-amber-500'
-    case 'cold': return 'bg-rose-500'
-    default: return 'bg-brand-400'
+    case 'hot': return 'bg-forest-500'
+    case 'likely': return 'bg-forest-400'
+    case 'uncertain': return 'bg-malt-400'
+    case 'cold': return 'bg-rust-500'
+    default: return 'bg-forest-300'
   }
 })
 
-const tierBg = computed(() => {
+const tierLabel = computed(() => {
   switch (props.confidence.tier) {
-    case 'hot': return 'bg-emerald-50 text-emerald-800 border-emerald-300'
-    case 'likely': return 'bg-lime-50 text-lime-800 border-lime-300'
-    case 'uncertain': return 'bg-amber-50 text-amber-800 border-amber-300'
-    case 'cold': return 'bg-rose-50 text-rose-800 border-rose-300'
-    default: return 'bg-brand-50 text-brand-800 border-brand-300'
+    case 'hot': return 'Sehr wahrscheinlich'
+    case 'likely': return 'Wahrscheinlich'
+    case 'uncertain': return 'Unsicher'
+    case 'cold': return 'Eher nicht'
+    default: return props.confidence.label
   }
 })
 </script>
 
 <template>
   <div>
-    <div
-      class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[11px] font-semibold"
-      :class="tierBg"
-      :title="`${confirmCount}× bestätigt, ${notFoundCount}× nicht gefunden`"
-    >
-      <span>{{ confidence.emoji }}</span>
-      <span>{{ confidence.label }}</span>
-      <span class="tabular-nums opacity-70">· {{ confidence.percent }}%</span>
-    </div>
-    <div
-      class="mt-1.5 h-1.5 w-full rounded-full bg-brand-100 overflow-hidden"
-      aria-hidden="true"
-    >
+    <div class="flex items-baseline justify-between gap-2">
+      <div class="flex items-center gap-2 text-xs text-ink-700 font-medium">
+        <span
+          class="size-1.5 rounded-full"
+          :class="tierColor"
+          aria-hidden="true"
+        />
+        <span>{{ tierLabel }}</span>
+      </div>
       <div
-        class="h-full rounded-full transition-all duration-500"
+        class="font-mono text-[11px] text-ink-500 tabular-nums"
+        :title="`${props.confirmCount} Bestätigungen, ${props.notFoundCount} negative Reports`"
+      >
+        {{ props.confidence.percent }}%
+      </div>
+    </div>
+    <div class="mt-1.5 h-1 w-full rounded-full bg-forest-100 overflow-hidden">
+      <div
+        class="h-full rounded-full transition-all duration-700"
         :class="tierColor"
-        :style="{ width: confidence.percent + '%' }"
+        :style="{ width: props.confidence.percent + '%' }"
       />
     </div>
   </div>

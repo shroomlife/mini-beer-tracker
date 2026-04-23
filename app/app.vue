@@ -4,7 +4,8 @@ useHead({
 })
 
 const route = useRoute()
-const hideNav = computed(() => route.path === '/auth')
+// BottomNav nur in den App-Routes (/map, /spots, /add) anzeigen — Landing + Auth sollen clean bleiben.
+const hideNav = computed(() => route.path === '/auth' || route.path === '/')
 
 const { loggedIn } = useUserSession()
 const { refresh: refreshUser } = useAuthUser()

@@ -1,33 +1,61 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap');
 
 @theme {
-  --color-brand-50: #EAF8F0;
-  --color-brand-100: #C8EBD6;
-  --color-brand-200: #93D7AE;
-  --color-brand-300: #5BBE85;
-  --color-brand-400: #2FA065;
-  --color-brand-500: #006B3F;  /* Heineken Green */
-  --color-brand-600: #005531;
-  --color-brand-700: #004026;
-  --color-brand-800: #002E1B;
-  --color-brand-900: #001D11;
+  /* Forest — deeper, more sophisticated than neon Heineken green */
+  --color-forest-50:  #F1F7F3;
+  --color-forest-100: #DDECE2;
+  --color-forest-200: #B6D4C1;
+  --color-forest-300: #85B598;
+  --color-forest-400: #549573;
+  --color-forest-500: #2F7A54;
+  --color-forest-600: #1E5D3F;
+  --color-forest-700: #114530;
+  --color-forest-800: #092E1F;
+  --color-forest-900: #051E14;
 
-  --color-cream-50: #FFFDF5;
-  --color-cream-100: #FFF9ED;
-  --color-cream-200: #FCF1D4;
+  /* Cream — warm off-white */
+  --color-cream-50:  #FDFBF4;
+  --color-cream-100: #F8F3E6;
+  --color-cream-200: #EEE5CC;
+  --color-cream-300: #E0D2A8;
 
-  --color-pop-500: #FF3E3E;   /* funny red pop */
-  --color-sun-500: #FFD84D;   /* sunshine yellow */
+  /* Malt — antique brass accent */
+  --color-malt-400: #C89D5F;
+  --color-malt-500: #A67B3E;
+  --color-malt-600: #85612F;
 
-  --font-display: "Fredoka", "Nunito", system-ui, sans-serif;
-  --font-sans: "Inter", system-ui, sans-serif;
+  /* Ink — body + text */
+  --color-ink-900: #0B1614;
+  --color-ink-800: #16241F;
+  --color-ink-700: #3A4844;
+  --color-ink-500: #7A8682;
+  --color-ink-300: #BFC6C3;
 
-  --shadow-chunk: 0 6px 0 0 #004026;
-  --shadow-chunk-pressed: 0 2px 0 0 #004026;
+  /* Rust — restrained pop for errors/danger */
+  --color-rust-500: #B94A3B;
+  --color-rust-600: #9B3A2E;
+
+  /* Typography */
+  --font-display: "Fraunces", "Playfair Display", Georgia, serif;
+  --font-sans: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Radii */
+  --radius-tight: 0.5rem;
+  --radius-card: 1.25rem;
+  --radius-sheet: 1.75rem;
+
+  /* Shadows — subtle, layered, editorial */
+  --shadow-hair: 0 0 0 1px rgba(11, 22, 20, 0.05);
+  --shadow-soft: 0 1px 2px rgba(11, 22, 20, 0.04), 0 4px 14px -4px rgba(11, 22, 20, 0.08);
+  --shadow-card: 0 1px 2px rgba(11, 22, 20, 0.04), 0 8px 24px -12px rgba(11, 22, 20, 0.14);
+  --shadow-float: 0 16px 40px -12px rgba(11, 22, 20, 0.18);
+
+  --ease-standard: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
-/* safari-safe viewport */
+/* Baseline */
 html, body, #__nuxt {
   height: 100%;
   overscroll-behavior-y: none;
@@ -35,58 +63,116 @@ html, body, #__nuxt {
 
 body {
   font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv11";
+  color: var(--color-ink-900);
   background:
-    radial-gradient(circle at 20% 10%, #FFF9ED 0%, #FCF1D4 60%, #F3E6B8 100%);
-  color: #0e1a12;
+    radial-gradient(ellipse at top, #FDFBF4 0%, #F8F3E6 55%, #EEE5CC 120%);
   -webkit-tap-highlight-color: transparent;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
-.font-display { font-family: var(--font-display); letter-spacing: -0.01em; }
-
-/* Chunky button primitive */
-.btn-chunk {
-  @apply inline-flex items-center justify-center rounded-2xl font-bold transition-all duration-100 active:translate-y-[4px] select-none;
-  box-shadow: var(--shadow-chunk);
-}
-.btn-chunk:active {
-  box-shadow: var(--shadow-chunk-pressed);
+/* Display font utility */
+.font-display {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  letter-spacing: -0.02em;
+  font-feature-settings: "ss01";
 }
 
-/* Safe area for iOS bottom nav */
-.safe-bottom {
-  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 0.5rem);
+/* Refined primary button (kein "chunky toy" shadow mehr) */
+.btn-primary {
+  @apply inline-flex items-center justify-center rounded-full font-medium transition-all select-none;
+  background: var(--color-forest-600);
+  color: var(--color-cream-50);
+  box-shadow: var(--shadow-soft);
+  transition-duration: 180ms;
+  transition-timing-function: var(--ease-standard);
 }
-.safe-top {
-  padding-top: calc(env(safe-area-inset-top, 0px) + 0.5rem);
+.btn-primary:hover { background: var(--color-forest-700); box-shadow: var(--shadow-card); }
+.btn-primary:active { transform: translateY(1px); }
+
+.btn-secondary {
+  @apply inline-flex items-center justify-center rounded-full font-medium transition-all select-none;
+  background: var(--color-cream-50);
+  color: var(--color-forest-700);
+  border: 1px solid var(--color-forest-200);
+  transition-duration: 180ms;
+  transition-timing-function: var(--ease-standard);
+}
+.btn-secondary:hover { background: var(--color-forest-50); border-color: var(--color-forest-300); }
+.btn-secondary:active { transform: translateY(1px); }
+
+.btn-ghost {
+  @apply inline-flex items-center justify-center rounded-full font-medium transition-colors select-none;
+  color: var(--color-ink-700);
+}
+.btn-ghost:hover { color: var(--color-forest-700); }
+
+/* Card */
+.card {
+  background: var(--color-cream-50);
+  border-radius: var(--radius-card);
+  border: 1px solid var(--color-forest-100);
+  box-shadow: var(--shadow-soft);
 }
 
-/* Leaflet fixes */
+/* Chip */
+.chip {
+  @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium tabular-nums;
+  border: 1px solid transparent;
+}
+
+/* Safe area */
+.safe-bottom { padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 0.5rem); }
+.safe-top { padding-top: calc(env(safe-area-inset-top, 0px) + 0.5rem); }
+
+/* Leaflet overrides — saubere, neutralere Look */
 .leaflet-container {
-  background: #d9eee0;
+  background: #E8EFE9;
   font-family: var(--font-sans);
 }
 .leaflet-control-attribution {
   font-size: 10px !important;
-  background: rgba(255,255,255,0.7) !important;
+  background: rgba(253, 251, 244, 0.8) !important;
+  color: var(--color-ink-500) !important;
+  backdrop-filter: blur(8px);
 }
-.mini-beer-marker {
-  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.25));
+.leaflet-control-zoom a {
+  background: var(--color-cream-50) !important;
+  color: var(--color-forest-700) !important;
+  border-color: var(--color-forest-100) !important;
 }
 
-/* Wiggle animation for the hero CTA */
-@keyframes wiggle {
-  0%, 100% { transform: rotate(-2deg); }
-  50% { transform: rotate(2deg); }
+.mini-beer-marker {
+  filter: drop-shadow(0 4px 8px rgba(11, 22, 20, 0.2));
 }
-.animate-wiggle {
-  animation: wiggle 2.2s ease-in-out infinite;
+
+/* Animations — sparing, editorial */
+@keyframes gentle-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
 }
+.animate-pulse-soft { animation: gentle-pulse 3s ease-in-out infinite; }
+
+@keyframes rise-in {
+  0% { opacity: 0; transform: translateY(8px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.animate-rise { animation: rise-in 0.45s var(--ease-standard) both; }
 
 @keyframes pop-in {
-  0% { transform: scale(0.6); opacity: 0; }
-  70% { transform: scale(1.05); opacity: 1; }
-  100% { transform: scale(1); }
+  0% { transform: scale(0.85); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
 }
-.animate-pop {
-  animation: pop-in 0.35s cubic-bezier(0.2, 0.8, 0.2, 1.2) both;
+.animate-pop { animation: pop-in 0.3s var(--ease-standard) both; }
+
+/* Marker-tooltip clean styling */
+.leaflet-tooltip {
+  border: 1px solid var(--color-forest-100) !important;
+  border-radius: 12px !important;
+  padding: 6px 10px !important;
+  box-shadow: var(--shadow-card) !important;
+  font-size: 12px !important;
+  color: var(--color-ink-900) !important;
 }
