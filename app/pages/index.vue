@@ -44,8 +44,9 @@ async function recenter(): Promise<void> {
 
 <template>
   <main class="relative flex-1 flex flex-col">
-    <!-- Map layer -->
-    <div class="absolute inset-0 bottom-24">
+    <!-- Map layer — bottom-36 (144px) gibt genug Clearance unter der FAB,
+         die von der Bottom-Bar nach oben rausragt -->
+    <div class="absolute inset-0 bottom-36">
       <ClientOnly>
         <MiniBeerMap
           ref="mapRef"
@@ -111,7 +112,7 @@ async function recenter(): Promise<void> {
     <Transition name="peek">
       <div
         v-if="selected"
-        class="absolute left-0 right-0 bottom-24 z-20 px-4"
+        class="absolute left-0 right-0 bottom-36 z-20 px-4"
       >
         <div class="mx-auto max-w-md animate-pop">
           <SpotCard
