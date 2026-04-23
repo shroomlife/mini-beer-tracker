@@ -38,7 +38,6 @@ function isActive(to: string): boolean {
               name="ph:plus-bold"
               class="size-7"
             />
-            <span class="text-[9px] font-medium tracking-widest uppercase mt-1 text-malt-400">Neu</span>
           </div>
         </NuxtLink>
       </div>

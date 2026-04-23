@@ -18,6 +18,6 @@ defineProps<{
       class="size-5 transition-transform duration-200"
       :class="active ? 'scale-110' : ''"
     />
-    <span class="text-[10px] tracking-[0.14em] uppercase font-medium">{{ label }}</span>
+    <span class="text-[11px] font-medium">{{ label }}</span>
   </NuxtLink>
 </template>

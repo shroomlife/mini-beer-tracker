@@ -71,12 +71,13 @@ async function recenter(): Promise<void> {
         class="mx-auto max-w-md card px-4 py-3 flex items-center gap-3"
         style="backdrop-filter: blur(12px);"
       >
+        <LogoMark :size="32" />
         <div class="flex-1 min-w-0">
-          <div class="font-display text-lg font-semibold text-ink-900 leading-tight">
+          <div class="font-display text-lg font-bold tracking-tight text-ink-900 leading-tight">
             Karte
           </div>
           <p class="text-xs text-ink-500">
-            {{ spots.length }} Spot{{ spots.length === 1 ? '' : 's' }} in Berlin
+            {{ spots.length }} Spot{{ spots.length === 1 ? '' : 's' }}
           </p>
         </div>
         <button

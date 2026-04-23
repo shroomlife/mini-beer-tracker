@@ -48,14 +48,11 @@ const sortOptions = [
     <header class="pt-6 pb-4 max-w-2xl mx-auto w-full">
       <div class="flex items-baseline justify-between gap-4">
         <div>
-          <div class="text-[10px] uppercase tracking-[0.28em] text-malt-500 font-medium">
-            Übersicht
-          </div>
-          <h1 class="mt-1 font-display text-3xl md:text-4xl font-semibold text-ink-900 leading-tight">
-            Deine Spots
+          <h1 class="font-display text-3xl md:text-4xl font-bold tracking-tight text-ink-900 leading-tight">
+            Spots
           </h1>
           <p class="mt-1 text-sm text-ink-500">
-            {{ spots.length }} Späti{{ spots.length === 1 ? '' : 's' }} in der Sammlung
+            {{ spots.length }} Späti{{ spots.length === 1 ? '' : 's' }}
           </p>
         </div>
         <button
@@ -83,14 +80,14 @@ const sortOptions = [
           class="absolute -top-16 -right-16 size-48 rounded-full bg-forest-500/30 blur-3xl"
         />
         <div class="relative flex-1 min-w-0">
-          <div class="text-[10px] uppercase tracking-[0.28em] text-malt-400 font-medium">
+          <div class="text-xs text-cream-100/70 font-medium truncate">
             {{ user.displayName || user.email }}
           </div>
           <div class="mt-1 flex items-baseline gap-2">
-            <span class="font-display text-2xl font-semibold tabular-nums">
+            <span class="font-display text-2xl font-bold tabular-nums tracking-tight">
               Level {{ user.progress.level }}
             </span>
-            <span class="text-sm text-cream-100/70 font-display italic">
+            <span class="text-sm text-cream-100/80">
               · {{ user.progress.rank }}
             </span>
           </div>
@@ -106,7 +103,7 @@ const sortOptions = [
         </div>
         <button
           type="button"
-          class="relative shrink-0 text-[11px] uppercase tracking-widest text-cream-100/60 hover:text-cream-50 transition-colors"
+          class="relative shrink-0 text-xs text-cream-100/60 hover:text-cream-50 underline underline-offset-4 transition-colors"
           @click="logout"
         >
           Logout
@@ -140,21 +137,21 @@ const sortOptions = [
       class="flex-1 grid place-items-center text-center max-w-sm mx-auto px-4"
     >
       <div>
-        <div class="font-display text-3xl md:text-4xl font-semibold text-ink-900 leading-tight">
-          Noch keine Spots.
-        </div>
-        <p class="mt-3 text-sm text-ink-700 leading-relaxed">
-          Beim nächsten Späti-Besuch: wenn da das kleine Heineken liegt, einfach auf das Plus in der Navigation unten tippen.
+        <LogoMark
+          :size="80"
+          class="mx-auto opacity-40"
+        />
+        <h2 class="mt-6 font-display text-2xl font-bold tracking-tight text-ink-900">
+          Noch keine Spots
+        </h2>
+        <p class="mt-2 text-sm text-ink-700 leading-relaxed">
+          Beim nächsten Späti: wenn da ein Mini-Bier liegt, unten auf das Plus tippen.
         </p>
         <NuxtLink
           to="/add"
-          class="btn-primary mt-8 h-11 px-6 text-sm"
+          class="btn-primary mt-6 h-11 px-6 text-sm"
         >
-          Ersten Spot anlegen
-          <Icon
-            name="ph:arrow-right-bold"
-            class="ml-2 size-4"
-          />
+          Spot anlegen
         </NuxtLink>
       </div>
     </section>

@@ -1,11 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <!-- Solid bg covers full square; safe-zone = center 80% circle -->
-  <rect width="512" height="512" fill="#114530"/>
-  <!-- Beer bottle centered within safe zone (204..308 = 104px wide) -->
-  <g transform="translate(256 256)" stroke="#FDFBF4" stroke-width="12" fill="none" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M -22 -100 L 22 -100"/>
-    <path d="M -16 -100 L -16 -62 Q -16 -50 -28 -42 L -28 70 Q -28 92 -6 92 L 6 92 Q 28 92 28 70 L 28 -42 Q 16 -50 16 -62 L 16 -100"/>
-    <path d="M -22 8 L 22 8"/>
-    <path d="M -22 30 L 22 30"/>
+  <rect width="512" height="512" fill="#FDFBF4"/>
+  <!-- Keep content inside 80% safe circle (r = 205 from center 256,256) -->
+  <g transform="translate(256 256) scale(1.9) translate(-48 -64)">
+    <g transform="translate(48 14) rotate(-6)">
+      <rect x="-13" y="-7" width="26" height="14" rx="3" fill="#C89D5F"/>
+      <rect x="-13" y="-7" width="26" height="3" rx="1.5" fill="#A67B3E"/>
+    </g>
+    <path
+      d="M 35 22 L 35 40 Q 35 46 31 50 L 31 108 Q 31 118 41 118 L 55 118 Q 65 118 65 108 L 65 50 Q 61 46 61 40 L 61 22 Z"
+      fill="#1E5D3F"
+    />
+    <rect x="38" y="28" width="3" height="16" rx="1.5" fill="#2F7A54"/>
+    <rect x="33" y="72" width="30" height="20" fill="#FDFBF4"/>
+    <circle cx="48" cy="82" r="2" fill="#C89D5F"/>
   </g>
 </svg>

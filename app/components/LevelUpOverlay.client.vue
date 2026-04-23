@@ -22,26 +22,19 @@ const title = computed(() => rankTitle(level.value))
           style="box-shadow: 0 30px 60px -20px rgba(11, 22, 20, 0.5);"
           @click.stop
         >
-          <div class="text-[10px] uppercase tracking-[0.32em] font-medium text-malt-500">
-            Aufgestiegen
+          <div class="text-xs text-malt-600 font-medium">
+            Level up
           </div>
 
-          <div class="mt-4 flex items-center justify-center gap-3">
-            <div class="h-px w-10 bg-forest-200" />
-            <div class="font-display text-5xl font-semibold text-forest-700 tabular-nums">
-              {{ level }}
-            </div>
-            <div class="h-px w-10 bg-forest-200" />
-          </div>
-          <div class="text-[10px] uppercase tracking-widest text-ink-500 mt-1">
-            Level
+          <div class="mt-3 font-display text-6xl font-bold tracking-tight text-forest-700 tabular-nums">
+            {{ level }}
           </div>
 
-          <h2 class="mt-6 font-display text-2xl font-semibold text-ink-900 leading-tight">
+          <h2 class="mt-5 font-display text-2xl font-bold tracking-tight text-ink-900">
             {{ title }}
           </h2>
-          <p class="mt-3 text-sm text-ink-700 leading-relaxed">
-            Dein neuer Titel. Die Berliner Mini-Bier-Welt hat dich gerade etwas lieber.
+          <p class="mt-3 text-sm text-ink-700">
+            Die Berliner Mini-Bier-Welt hat dich jetzt etwas lieber.
           </p>
 
           <button

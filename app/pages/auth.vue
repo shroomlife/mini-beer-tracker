@@ -70,23 +70,18 @@ async function submit(): Promise<void> {
         Zurück
       </NuxtLink>
       <div class="flex items-center gap-2">
-        <img
-          src="/logo.svg"
-          alt=""
-          class="size-8"
-          aria-hidden="true"
-        >
+        <LogoMark
+          :size="28"
+          class="logo-tilt"
+        />
         <span class="font-display text-sm font-semibold tracking-tight">Mini Beer Tracker</span>
       </div>
     </header>
 
     <div class="flex-1 flex items-center justify-center">
       <div class="w-full max-w-sm animate-rise">
-        <div class="text-[10px] uppercase tracking-[0.28em] text-malt-500 font-medium text-center">
-          {{ mode === 'login' ? 'Willkommen zurück' : 'Neuer Account' }}
-        </div>
-        <h1 class="mt-3 font-display text-4xl font-semibold text-ink-900 text-center leading-tight">
-          {{ mode === 'login' ? 'Anmelden.' : 'Loslegen.' }}
+        <h1 class="font-display text-3xl font-bold text-ink-900 text-center tracking-tight">
+          {{ mode === 'login' ? 'Willkommen zurück' : 'Account anlegen' }}
         </h1>
 
         <div class="mt-8 inline-flex w-full rounded-full bg-cream-50 border border-forest-100 p-1 text-sm font-medium">
@@ -116,9 +111,9 @@ async function submit(): Promise<void> {
             v-if="mode === 'register'"
             class="flex flex-col gap-1.5"
           >
-            <span class="text-xs uppercase tracking-widest text-ink-500 font-medium">
+            <span class="text-xs text-ink-700 font-medium">
               Name
-              <span class="normal-case tracking-normal text-ink-300">· optional</span>
+              <span class="text-ink-300 font-normal">· optional</span>
             </span>
             <input
               v-model="form.displayName"
@@ -130,7 +125,7 @@ async function submit(): Promise<void> {
           </label>
 
           <label class="flex flex-col gap-1.5">
-            <span class="text-xs uppercase tracking-widest text-ink-500 font-medium">Email</span>
+            <span class="text-xs text-ink-700 font-medium">Email</span>
             <input
               v-model="form.email"
               type="email"
@@ -143,7 +138,7 @@ async function submit(): Promise<void> {
           </label>
 
           <label class="flex flex-col gap-1.5">
-            <span class="text-xs uppercase tracking-widest text-ink-500 font-medium">Passwort</span>
+            <span class="text-xs text-ink-700 font-medium">Passwort</span>
             <input
               v-model="form.password"
               type="password"

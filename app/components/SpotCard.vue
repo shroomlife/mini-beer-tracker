@@ -55,11 +55,8 @@ const distance = computed(() => {
         v-if="distance"
         class="shrink-0 text-right"
       >
-        <div class="font-display text-base font-medium text-forest-700 tabular-nums">
+        <div class="font-display text-base font-semibold text-forest-700 tabular-nums">
           {{ distance }}
-        </div>
-        <div class="text-[10px] uppercase tracking-wider text-ink-500 mt-0.5">
-          Entfernung
         </div>
       </div>
     </div>

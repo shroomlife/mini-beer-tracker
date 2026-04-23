@@ -96,29 +96,25 @@ async function save(): Promise<void> {
     <!-- Intro -->
     <section
       v-if="step === 'intro'"
-      class="flex-1 flex flex-col items-center justify-center text-center gap-8 max-w-md mx-auto"
+      class="flex-1 flex flex-col items-center justify-center text-center gap-7 max-w-md mx-auto"
     >
-      <div class="text-[10px] uppercase tracking-[0.28em] text-malt-500 font-medium">
-        Neuer Spot
-      </div>
-      <h1 class="font-display text-4xl md:text-5xl font-semibold leading-[1.05] text-ink-900">
-        Mini&#8209;Bier gesichtet?
+      <LogoMark
+        :size="80"
+        class="animate-bob"
+      />
+      <h1 class="font-display text-4xl md:text-5xl font-bold tracking-tight text-ink-900">
+        Mini-Bier gesichtet?
       </h1>
-      <p class="text-ink-700 leading-relaxed max-w-sm">
-        Tipp auf den Knopf. Wir nehmen deinen GPS-Standort und lesen die
-        Späti&#8209;Adresse automatisch aus.
+      <p class="text-ink-700 max-w-sm">
+        Ein Tap und wir speichern GPS plus Adresse für dich.
       </p>
 
       <button
         type="button"
-        class="btn-primary h-20 w-full max-w-xs text-lg font-display font-semibold"
+        class="btn-primary h-16 w-full max-w-xs text-base font-semibold"
         @click="startCapture"
       >
         Hier gibt's welche
-        <Icon
-          name="ph:map-pin-line-bold"
-          class="ml-3 size-5"
-        />
       </button>
 
       <p
@@ -129,7 +125,7 @@ async function save(): Promise<void> {
       </p>
 
       <p class="text-xs text-ink-500 max-w-xs leading-relaxed">
-        Standort wird nur im Moment des Tippens abgefragt und bleibt nur als Spot-Koordinate gespeichert.
+        Standort wird nur genommen wenn du tippst.
       </p>
     </section>
 
@@ -162,18 +158,15 @@ async function save(): Promise<void> {
             name="ph:arrow-left-bold"
             class="size-3.5"
           />
-          Nochmal messen
+          Nochmal
         </button>
-        <div class="mt-4 text-[10px] uppercase tracking-[0.28em] text-malt-500 font-medium">
-          Schritt 2
-        </div>
-        <h2 class="mt-1 font-display text-3xl font-semibold text-ink-900 leading-tight">
-          Details prüfen
+        <h2 class="mt-3 font-display text-3xl font-bold tracking-tight text-ink-900">
+          Details
         </h2>
       </header>
 
       <div class="card p-5">
-        <div class="text-[10px] uppercase tracking-widest text-ink-500 font-medium">
+        <div class="text-xs text-ink-500 font-medium">
           Adresse
         </div>
         <div class="mt-2">
@@ -217,7 +210,7 @@ async function save(): Promise<void> {
         @submit.prevent="save"
       >
         <label class="flex flex-col gap-1.5">
-          <span class="text-xs uppercase tracking-widest text-ink-500 font-medium">Name</span>
+          <span class="text-xs text-ink-700 font-medium">Name</span>
           <input
             v-model="form.name"
             type="text"
@@ -228,9 +221,9 @@ async function save(): Promise<void> {
         </label>
 
         <label class="flex flex-col gap-1.5">
-          <span class="text-xs uppercase tracking-widest text-ink-500 font-medium">
+          <span class="text-xs text-ink-700 font-medium">
             Preis
-            <span class="normal-case tracking-normal text-ink-300">· optional</span>
+            <span class="text-ink-300 font-normal">· optional</span>
           </span>
           <div class="relative">
             <input
@@ -245,9 +238,9 @@ async function save(): Promise<void> {
         </label>
 
         <label class="flex flex-col gap-1.5">
-          <span class="text-xs uppercase tracking-widest text-ink-500 font-medium">
+          <span class="text-xs text-ink-700 font-medium">
             Notiz
-            <span class="normal-case tracking-normal text-ink-300">· optional</span>
+            <span class="text-ink-300 font-normal">· optional</span>
           </span>
           <textarea
             v-model="form.vibe"

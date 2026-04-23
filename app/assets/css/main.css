@@ -1,8 +1,8 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 @theme {
-  /* Forest — deeper, more sophisticated than neon Heineken green */
+  /* Forest — deeper than neon Heineken green */
   --color-forest-50:  #F1F7F3;
   --color-forest-100: #DDECE2;
   --color-forest-200: #B6D4C1;
@@ -14,39 +14,31 @@
   --color-forest-800: #092E1F;
   --color-forest-900: #051E14;
 
-  /* Cream — warm off-white */
   --color-cream-50:  #FDFBF4;
   --color-cream-100: #F8F3E6;
   --color-cream-200: #EEE5CC;
   --color-cream-300: #E0D2A8;
 
-  /* Malt — antique brass accent */
   --color-malt-400: #C89D5F;
   --color-malt-500: #A67B3E;
   --color-malt-600: #85612F;
 
-  /* Ink — body + text */
   --color-ink-900: #0B1614;
   --color-ink-800: #16241F;
   --color-ink-700: #3A4844;
   --color-ink-500: #7A8682;
   --color-ink-300: #BFC6C3;
 
-  /* Rust — restrained pop for errors/danger */
   --color-rust-500: #B94A3B;
   --color-rust-600: #9B3A2E;
 
-  /* Typography */
-  --font-display: "Fraunces", "Playfair Display", Georgia, serif;
   --font-sans: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
 
-  /* Radii */
   --radius-tight: 0.5rem;
   --radius-card: 1.25rem;
   --radius-sheet: 1.75rem;
 
-  /* Shadows — subtle, layered, editorial */
   --shadow-hair: 0 0 0 1px rgba(11, 22, 20, 0.05);
   --shadow-soft: 0 1px 2px rgba(11, 22, 20, 0.04), 0 4px 14px -4px rgba(11, 22, 20, 0.08);
   --shadow-card: 0 1px 2px rgba(11, 22, 20, 0.04), 0 8px 24px -12px rgba(11, 22, 20, 0.14);
@@ -55,7 +47,6 @@
   --ease-standard: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
-/* Baseline */
 html, body, #__nuxt {
   height: 100%;
   overscroll-behavior-y: none;
@@ -63,24 +54,22 @@ html, body, #__nuxt {
 
 body {
   font-family: var(--font-sans);
-  font-feature-settings: "ss01", "cv11";
+  font-feature-settings: "cv11";
   color: var(--color-ink-900);
-  background:
-    radial-gradient(ellipse at top, #FDFBF4 0%, #F8F3E6 55%, #EEE5CC 120%);
+  background: var(--color-cream-50);
   -webkit-tap-highlight-color: transparent;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Display font utility */
+/* Display = Inter Tight weight. No separate display font anymore. */
 .font-display {
-  font-family: var(--font-display);
-  font-optical-sizing: auto;
-  letter-spacing: -0.02em;
-  font-feature-settings: "ss01";
+  font-family: var(--font-sans);
+  font-weight: 700;
+  letter-spacing: -0.025em;
 }
 
-/* Refined primary button (kein "chunky toy" shadow mehr) */
+/* Buttons */
 .btn-primary {
   @apply inline-flex items-center justify-center rounded-full font-medium transition-all select-none;
   background: var(--color-forest-600);
@@ -109,7 +98,6 @@ body {
 }
 .btn-ghost:hover { color: var(--color-forest-700); }
 
-/* Card */
 .card {
   background: var(--color-cream-50);
   border-radius: var(--radius-card);
@@ -117,24 +105,22 @@ body {
   box-shadow: var(--shadow-soft);
 }
 
-/* Chip */
 .chip {
   @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium tabular-nums;
   border: 1px solid transparent;
 }
 
-/* Safe area */
 .safe-bottom { padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 0.5rem); }
 .safe-top { padding-top: calc(env(safe-area-inset-top, 0px) + 0.5rem); }
 
-/* Leaflet overrides — saubere, neutralere Look */
+/* Leaflet */
 .leaflet-container {
   background: #E8EFE9;
   font-family: var(--font-sans);
 }
 .leaflet-control-attribution {
   font-size: 10px !important;
-  background: rgba(253, 251, 244, 0.8) !important;
+  background: rgba(253, 251, 244, 0.85) !important;
   color: var(--color-ink-500) !important;
   backdrop-filter: blur(8px);
 }
@@ -143,17 +129,22 @@ body {
   color: var(--color-forest-700) !important;
   border-color: var(--color-forest-100) !important;
 }
-
 .mini-beer-marker {
   filter: drop-shadow(0 4px 8px rgba(11, 22, 20, 0.2));
 }
 
-/* Animations — sparing, editorial */
-@keyframes gentle-pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.04); }
+/* Playful logo micro-tilt on hover */
+.logo-tilt {
+  transition: transform 300ms var(--ease-standard);
 }
-.animate-pulse-soft { animation: gentle-pulse 3s ease-in-out infinite; }
+.logo-tilt:hover { transform: rotate(-4deg) scale(1.03); }
+
+/* Very light bob for hero logo (subtle, 4px travel, slow) */
+@keyframes gentle-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+.animate-bob { animation: gentle-bob 4s ease-in-out infinite; }
 
 @keyframes rise-in {
   0% { opacity: 0; transform: translateY(8px); }
@@ -167,7 +158,6 @@ body {
 }
 .animate-pop { animation: pop-in 0.3s var(--ease-standard) both; }
 
-/* Marker-tooltip clean styling */
 .leaflet-tooltip {
   border: 1px solid var(--color-forest-100) !important;
   border-radius: 12px !important;
