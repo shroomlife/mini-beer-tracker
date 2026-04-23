@@ -1,6 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" fill="#006B3F"/>
-  <g transform="translate(256 256)" text-anchor="middle" font-family="'Segoe UI Emoji','Apple Color Emoji',sans-serif" font-size="200" dominant-baseline="central">
-    <text>🍺</text>
+  <!-- Solid bg covers full square; safe-zone = center 80% circle -->
+  <rect width="512" height="512" fill="#114530"/>
+  <!-- Beer bottle centered within safe zone (204..308 = 104px wide) -->
+  <g transform="translate(256 256)" stroke="#FDFBF4" stroke-width="12" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M -22 -100 L 22 -100"/>
+    <path d="M -16 -100 L -16 -62 Q -16 -50 -28 -42 L -28 70 Q -28 92 -6 92 L 6 92 Q 28 92 28 70 L 28 -42 Q 16 -50 16 -62 L 16 -100"/>
+    <path d="M -22 8 L 22 8"/>
+    <path d="M -22 30 L 22 30"/>
   </g>
 </svg>

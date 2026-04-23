@@ -1,69 +1,88 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#FDFBF4"/>
+      <stop offset="50%" stop-color="#F8F3E6"/>
       <stop offset="100%" stop-color="#EEE5CC"/>
     </linearGradient>
-    <linearGradient id="panel" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#1E5D3F"/>
-      <stop offset="100%" stop-color="#114530"/>
-    </linearGradient>
+    <radialGradient id="panelGlow" cx="30%" cy="40%" r="70%">
+      <stop offset="0%" stop-color="#2F7A54" stop-opacity="0.9"/>
+      <stop offset="70%" stop-color="#114530" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#092E1F" stop-opacity="1"/>
+    </radialGradient>
   </defs>
-  <rect width="1200" height="630" fill="url(#bg)"/>
 
-  <!-- Subtle grid of dots -->
-  <g opacity="0.08" fill="#1E5D3F">
-    <circle cx="100" cy="100" r="2"/>
-    <circle cx="200" cy="100" r="2"/>
-    <circle cx="300" cy="100" r="2"/>
-    <circle cx="400" cy="100" r="2"/>
-    <circle cx="100" cy="200" r="2"/>
-    <circle cx="200" cy="200" r="2"/>
-    <circle cx="300" cy="200" r="2"/>
-  </g>
+  <rect width="1200" height="630" fill="url(#bgGrad)"/>
 
-  <!-- Green panel right -->
-  <g transform="translate(760 0)">
-    <rect x="0" y="60" width="440" height="510" rx="32" fill="url(#panel)"/>
-    <!-- Map pins -->
-    <g transform="translate(50 120)">
-      <circle cx="80" cy="80" r="28" fill="#FDFBF4"/>
-      <text x="80" y="88" text-anchor="middle" font-family="Georgia, serif" font-weight="600" font-size="22" fill="#114530">3</text>
-    </g>
-    <g transform="translate(260 210)">
-      <circle cx="40" cy="40" r="22" fill="#C89D5F"/>
-      <text x="40" y="47" text-anchor="middle" font-family="Georgia, serif" font-weight="600" font-size="16" fill="#FDFBF4">1</text>
-    </g>
-    <g transform="translate(100 380)">
-      <circle cx="40" cy="40" r="22" fill="#FDFBF4"/>
-      <text x="40" y="47" text-anchor="middle" font-family="Georgia, serif" font-weight="600" font-size="16" fill="#114530">2</text>
-    </g>
-    <g transform="translate(300 420)">
-      <circle cx="35" cy="35" r="20" fill="#B94A3B"/>
-      <text x="35" y="41" text-anchor="middle" font-family="Georgia, serif" font-weight="600" font-size="14" fill="#FDFBF4">1</text>
-    </g>
-  </g>
-
-  <!-- Left text -->
-  <g transform="translate(70 170)">
-    <text font-family="Inter, sans-serif" font-size="16" font-weight="500" fill="#A67B3E" letter-spacing="4">
-      <tspan>BERLIN · CROWDSOURCED</tspan>
+  <!-- Left: editorial text block -->
+  <g transform="translate(72 150)">
+    <text font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="500" fill="#A67B3E" letter-spacing="4">
+      <tspan>BERLIN · CROWDSOURCED · WERBEFREI</tspan>
     </text>
 
-    <text font-family="Georgia, 'Playfair Display', serif" font-size="90" font-weight="600" fill="#0B1614" letter-spacing="-2">
-      <tspan x="0" y="100">Mini Beer</tspan>
-      <tspan x="0" y="200">Tracker.</tspan>
+    <text font-family="Fraunces, Georgia, serif" font-size="84" font-weight="600" fill="#0B1614" letter-spacing="-2">
+      <tspan x="0" y="90">Das Späti-</tspan>
+      <tspan x="0" y="185">Verzeichnis</tspan>
     </text>
 
-    <text font-family="Inter, sans-serif" font-size="24" font-weight="400" fill="#3A4844">
-      <tspan x="0" y="280">Das Späti-Verzeichnis für die kleinen</tspan>
-      <tspan x="0" y="316">0,15-Liter-Heinekens — gemeinsam gepflegt.</tspan>
+    <text font-family="Fraunces, Georgia, serif" font-size="54" font-weight="400" font-style="italic" fill="#1E5D3F">
+      <tspan x="0" y="255">für Mini-Biere.</tspan>
     </text>
 
-    <g transform="translate(0 380)">
-      <rect x="0" y="0" width="210" height="54" rx="27" fill="#1E5D3F"/>
-      <text x="105" y="35" text-anchor="middle" font-family="Inter, sans-serif" font-size="16" font-weight="500" fill="#FDFBF4">
+    <text font-family="Inter, system-ui, sans-serif" font-size="21" font-weight="400" fill="#3A4844">
+      <tspan x="0" y="325">Gemeinsam finden wir in Berlin jeden Späti,</tspan>
+      <tspan x="0" y="357">der die kleinen 0,15-Liter-Heinekens führt.</tspan>
+    </text>
+
+    <!-- Pill button -->
+    <g transform="translate(0 395)">
+      <rect x="0" y="0" width="260" height="52" rx="26" fill="#1E5D3F"/>
+      <text x="130" y="34" text-anchor="middle" font-family="Inter, sans-serif" font-size="15" font-weight="500" fill="#FDFBF4" letter-spacing="0.3">
         beer.shroomlife.de
+      </text>
+    </g>
+  </g>
+
+  <!-- Right: forest panel with crest mark -->
+  <g transform="translate(760 0)">
+    <rect x="0" y="40" width="420" height="550" rx="40" fill="url(#panelGlow)"/>
+
+    <!-- Simplified beer-bottle crest inside panel -->
+    <g transform="translate(210 315)">
+      <!-- Ring -->
+      <circle cx="0" cy="0" r="150" fill="none" stroke="#FDFBF4" stroke-width="2.5"/>
+      <circle cx="0" cy="0" r="138" fill="none" stroke="#FDFBF4" stroke-width="1" stroke-opacity="0.4"/>
+
+      <!-- Sun-ray ticks -->
+      <g stroke="#FDFBF4" stroke-width="2" stroke-linecap="round">
+        <line x1="0" y1="-144" x2="0" y2="-128"/>
+        <line x1="100" y1="-100" x2="90" y2="-90"/>
+        <line x1="144" y1="0" x2="128" y2="0"/>
+        <line x1="100" y1="100" x2="90" y2="90"/>
+        <line x1="0" y1="144" x2="0" y2="128"/>
+        <line x1="-100" y1="100" x2="-90" y2="90"/>
+        <line x1="-144" y1="0" x2="-128" y2="0"/>
+        <line x1="-100" y1="-100" x2="-90" y2="-90"/>
+      </g>
+
+      <!-- Bottle silhouette -->
+      <g stroke="#FDFBF4" fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M -20 -82 L 20 -82"/>
+        <path d="M -14 -82 L -14 -48 Q -14 -38 -24 -30 L -24 72 Q -24 88 -6 88 L 6 88 Q 24 88 24 72 L 24 -30 Q 14 -38 14 -48 L 14 -82"/>
+      </g>
+
+      <!-- BERLIN banderole -->
+      <g transform="translate(0 18)">
+        <rect x="-48" y="-10" width="96" height="26" rx="13" fill="#C89D5F"/>
+        <text x="0" y="8" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#114530" letter-spacing="2">BERLIN</text>
+      </g>
+
+      <!-- Curved top wordmark -->
+      <defs>
+        <path id="topArc" d="M -110 -8 A 110 110 0 0 1 110 -8" fill="none"/>
+      </defs>
+      <text font-family="Fraunces, Georgia, serif" font-size="14" font-weight="600" fill="#FDFBF4" letter-spacing="3">
+        <textPath href="#topArc" startOffset="50%" text-anchor="middle">MINI BEER TRACKER</textPath>
       </text>
     </g>
   </g>

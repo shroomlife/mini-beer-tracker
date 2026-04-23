@@ -128,47 +128,41 @@ const year = new Date().getFullYear()
           </dl>
         </div>
 
-        <!-- Phone mockup -->
-        <div class="relative mx-auto">
+        <!-- Hero visual: logo + subtle map backdrop -->
+        <div class="relative mx-auto w-full max-w-[440px] aspect-square">
+          <!-- Backdrop: layered soft circles evoking a map/radar -->
           <div
-            class="relative w-[280px] h-[560px] rounded-[44px] border-[10px] border-ink-900 bg-cream-100 overflow-hidden"
-            style="box-shadow: 0 40px 80px -20px rgba(11, 22, 20, 0.4);"
+            aria-hidden="true"
+            class="absolute inset-0 grid place-items-center"
           >
-            <div class="absolute top-0 inset-x-0 h-16 bg-gradient-to-b from-forest-700 to-forest-500 flex items-end px-4 pb-3">
-              <span class="font-display text-cream-50 text-sm font-semibold">Map</span>
-            </div>
-            <div class="absolute inset-0 top-16 bottom-20 bg-[linear-gradient(135deg,#D5E5D9_0%,#C4DBCB_50%,#B6D4C1_100%)]">
-              <!-- Fake map pins -->
-              <div class="absolute top-14 left-10 size-8 rounded-full bg-forest-600 border-[3px] border-cream-50 grid place-items-center text-cream-50 font-display text-xs font-semibold">
-                3
-              </div>
-              <div class="absolute top-32 right-12 size-8 rounded-full bg-malt-500 border-[3px] border-cream-50 grid place-items-center text-cream-50 font-display text-xs font-semibold">
-                1
-              </div>
-              <div class="absolute bottom-20 left-16 size-8 rounded-full bg-forest-500 border-[3px] border-cream-50 grid place-items-center text-cream-50 font-display text-xs font-semibold">
-                2
-              </div>
-              <div class="absolute bottom-36 right-20 size-8 rounded-full bg-rust-500 border-[3px] border-cream-50 grid place-items-center text-cream-50 font-display text-xs font-semibold">
-                1
-              </div>
-            </div>
-            <div class="absolute bottom-0 inset-x-0 h-20 bg-cream-50 border-t border-forest-100 flex items-center justify-around px-6">
-              <Icon
-                name="ph:map-pin-bold"
-                class="size-5 text-forest-700"
-              />
-              <div class="size-12 rounded-full bg-forest-600 grid place-items-center -mt-6 border-4 border-cream-50">
-                <Icon
-                  name="ph:plus-bold"
-                  class="size-5 text-cream-50"
-                />
-              </div>
-              <Icon
-                name="ph:list-bold"
-                class="size-5 text-ink-500"
-              />
-            </div>
+            <div class="absolute size-[88%] rounded-full border border-forest-200/60" />
+            <div class="absolute size-[66%] rounded-full border border-forest-200/80" />
+            <div class="absolute size-[44%] rounded-full border border-forest-300/80" />
+            <div class="absolute size-[22%] rounded-full bg-forest-100/50" />
+            <!-- Decorative pins on the outer ring -->
+            <span
+              class="absolute size-3 rounded-full bg-forest-500"
+              style="top: 12%; left: 30%;"
+            />
+            <span
+              class="absolute size-3 rounded-full bg-malt-400"
+              style="top: 26%; right: 14%;"
+            />
+            <span
+              class="absolute size-3 rounded-full bg-forest-600"
+              style="bottom: 18%; left: 22%;"
+            />
+            <span
+              class="absolute size-3 rounded-full bg-rust-500"
+              style="bottom: 28%; right: 20%;"
+            />
           </div>
+          <!-- Logo centered -->
+          <img
+            src="/logo.svg"
+            alt="Mini Beer Tracker Emblem"
+            class="absolute inset-0 m-auto w-[70%] h-[70%] object-contain animate-pulse-soft"
+          >
         </div>
       </div>
     </section>
