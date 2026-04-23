@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="30%" r="80%">
+      <stop offset="0%" stop-color="#2FA065"/>
+      <stop offset="100%" stop-color="#004026"/>
+    </radialGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <g transform="translate(256 260)" text-anchor="middle" font-family="'Segoe UI Emoji','Apple Color Emoji',sans-serif" font-size="240" dominant-baseline="central">
+    <text>🍺</text>
+  </g>
+  <text x="256" y="460" text-anchor="middle" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-weight="800" font-size="56" fill="#FFF9ED" letter-spacing="-1">MINI</text>
+</svg>

@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  displayName  String?
+  xp           Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  spots   Spot[]
+  reports SpotReport[]
+}
+
+model Spot {
+  id             String   @id @default(cuid())
+  name           String
+  address        String
+  lat            Float
+  lon            Float
+  accuracyM      Int?
+  priceCents     Int?
+  vibe           String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  confirmedAt    DateTime @default(now())
+  confirmCount   Int      @default(1)
+  notFoundCount  Int      @default(0)
+  lastNotFoundAt DateTime?
+
+  createdById String?
+  createdBy   User?   @relation(fields: [createdById], references: [id], onDelete: SetNull)
+
+  reports SpotReport[]
+
+  @@index([lat, lon])
+  @@index([createdById])
+}
+
+/// Event-Log für Sightings. Erlaubt spätere Zeit-Analyse ("heute Mittag war's da").
+model SpotReport {
+  id        String   @id @default(cuid())
+  kind      String   // 'found' | 'not_found'
+  createdAt DateTime @default(now())
+
+  spotId String
+  spot   Spot   @relation(fields: [spotId], references: [id], onDelete: Cascade)
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([spotId, createdAt])
+  @@index([userId, createdAt])
+}

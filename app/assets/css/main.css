@@ -1,0 +1,92 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+@theme {
+  --color-brand-50: #EAF8F0;
+  --color-brand-100: #C8EBD6;
+  --color-brand-200: #93D7AE;
+  --color-brand-300: #5BBE85;
+  --color-brand-400: #2FA065;
+  --color-brand-500: #006B3F;  /* Heineken Green */
+  --color-brand-600: #005531;
+  --color-brand-700: #004026;
+  --color-brand-800: #002E1B;
+  --color-brand-900: #001D11;
+
+  --color-cream-50: #FFFDF5;
+  --color-cream-100: #FFF9ED;
+  --color-cream-200: #FCF1D4;
+
+  --color-pop-500: #FF3E3E;   /* funny red pop */
+  --color-sun-500: #FFD84D;   /* sunshine yellow */
+
+  --font-display: "Fredoka", "Nunito", system-ui, sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+
+  --shadow-chunk: 0 6px 0 0 #004026;
+  --shadow-chunk-pressed: 0 2px 0 0 #004026;
+}
+
+/* safari-safe viewport */
+html, body, #__nuxt {
+  height: 100%;
+  overscroll-behavior-y: none;
+}
+
+body {
+  font-family: var(--font-sans);
+  background:
+    radial-gradient(circle at 20% 10%, #FFF9ED 0%, #FCF1D4 60%, #F3E6B8 100%);
+  color: #0e1a12;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.font-display { font-family: var(--font-display); letter-spacing: -0.01em; }
+
+/* Chunky button primitive */
+.btn-chunk {
+  @apply inline-flex items-center justify-center rounded-2xl font-bold transition-all duration-100 active:translate-y-[4px] select-none;
+  box-shadow: var(--shadow-chunk);
+}
+.btn-chunk:active {
+  box-shadow: var(--shadow-chunk-pressed);
+}
+
+/* Safe area for iOS bottom nav */
+.safe-bottom {
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 0.5rem);
+}
+.safe-top {
+  padding-top: calc(env(safe-area-inset-top, 0px) + 0.5rem);
+}
+
+/* Leaflet fixes */
+.leaflet-container {
+  background: #d9eee0;
+  font-family: var(--font-sans);
+}
+.leaflet-control-attribution {
+  font-size: 10px !important;
+  background: rgba(255,255,255,0.7) !important;
+}
+.mini-beer-marker {
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.25));
+}
+
+/* Wiggle animation for the hero CTA */
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2deg); }
+}
+.animate-wiggle {
+  animation: wiggle 2.2s ease-in-out infinite;
+}
+
+@keyframes pop-in {
+  0% { transform: scale(0.6); opacity: 0; }
+  70% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); }
+}
+.animate-pop {
+  animation: pop-in 0.35s cubic-bezier(0.2, 0.8, 0.2, 1.2) both;
+}

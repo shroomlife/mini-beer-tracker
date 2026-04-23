@@ -1,0 +1,13 @@
+node_modules
+.nuxt
+.output
+.data
+.env
+*.log
+dist
+.DS_Store
+# Prisma local DB (inkl. WAL + SHM Files)
+prisma/dev.db
+prisma/dev.db-*
+data/*.db
+data/*.db-*
