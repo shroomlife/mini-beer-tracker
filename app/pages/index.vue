@@ -48,10 +48,13 @@ const year = new Date().getFullYear()
   <div class="min-h-screen flex flex-col bg-cream-50">
     <!-- Top bar -->
     <header class="safe-top px-6 md:px-10 py-4 flex items-center justify-between">
-      <div class="flex items-center gap-2">
-        <div class="size-8 rounded-lg bg-forest-600 grid place-items-center">
-          <span class="text-cream-50 font-display font-semibold">m</span>
-        </div>
+      <div class="flex items-center gap-2.5">
+        <img
+          src="/logo.svg"
+          alt=""
+          class="size-10"
+          aria-hidden="true"
+        >
         <span class="font-display text-lg font-semibold tracking-tight">Mini Beer Tracker</span>
       </div>
       <NuxtLink

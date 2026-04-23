@@ -70,9 +70,12 @@ async function submit(): Promise<void> {
         Zurück
       </NuxtLink>
       <div class="flex items-center gap-2">
-        <div class="size-7 rounded-md bg-forest-600 grid place-items-center">
-          <span class="text-cream-50 font-display font-semibold text-sm">m</span>
-        </div>
+        <img
+          src="/logo.svg"
+          alt=""
+          class="size-8"
+          aria-hidden="true"
+        >
         <span class="font-display text-sm font-semibold tracking-tight">Mini Beer Tracker</span>
       </div>
     </header>
