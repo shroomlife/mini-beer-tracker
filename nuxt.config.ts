@@ -45,6 +45,14 @@ export default defineNuxtConfig({
 
   nitro: {
     experimental: { openAPI: false },
+    routeRules: {
+      // Service Worker darf NIE gecached werden — sonst bleiben Clients
+      // auf alter PWA-Version hängen.
+      '/sw.js': { headers: { 'cache-control': 'no-cache, no-store, must-revalidate' } },
+      '/manifest.webmanifest': { headers: { 'cache-control': 'no-cache' } },
+      // Immutable Build-Assets (Hash im Filename) — lange cachebar.
+      '/_nuxt/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
+    },
   },
 
   vite: {
